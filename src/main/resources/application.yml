@@ -1,0 +1,23 @@
+logging:
+  level:
+    root: INFO
+  pattern:
+    dateformat: yyyy-MM-dd HH:mm:ss.SSS,Europe/Stockholm
+  file:
+    name: logs/application.log
+server:
+  port: 5000
+  tomcat:
+    basedir: logs
+    accesslog:
+      enabled: true
+      prefix: access
+      suffix: .log
+      file-date-format: .yyyy-MM-dd
+      directory: tomcat
+      pattern: common
+spring:
+  application:
+    name: productcatalogue
+#  config:
+#    import: local.yml
