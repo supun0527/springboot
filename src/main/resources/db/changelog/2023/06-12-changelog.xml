@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+    <changeSet id="1701849312-1" author="tejnal">
+        <!-- Create the Product table -->
+        <createTable tableName="product">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="product_key" type="VARCHAR(255)"/>
+            <column name="service_type_id" type="INT"/>
+            <column name="is_disabled" type="BOOLEAN"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1701849312-2" author="tejnal">
+        <!-- Create the Service table -->
+        <createTable tableName="service">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="1701849312-3" author="tejnal">
+        <!-- Create the ServiceType table -->
+        <createTable tableName="service_type">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="service_id" type="INT"/>
+            <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1701849312-4" author="tejnal">
+        <!-- Create the Settings table -->
+        <createTable tableName="settings">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_id" type="INT"/>
+            <column name="value" type="JSONB"/>
+            <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1701849312-5" author="tejnal">
+        <!-- Create the SettingsHistory table -->
+        <createTable tableName="settings_history">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="setting_id" type="BIGINT"/>
+            <column name="value" type="JSONB"/>
+            <column name="activated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1701849312-6" author="tejnal">
+
+        <!-- Add foreign key constraints -->
+        <addForeignKeyConstraint baseTableName="product" baseColumnNames="service_type_id"
+                                 constraintName="fk_product_service_type"
+                                 referencedTableName="service_type" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="service_type" baseColumnNames="service_id"
+                                 constraintName="fk_service_type_service"
+                                 referencedTableName="service" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="settings" baseColumnNames="product_id"
+                                 constraintName="fk_settings_product"
+                                 referencedTableName="product" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="settings_history" baseColumnNames="setting_id"
+                                 constraintName="fk_settings_history_setting"
+                                 referencedTableName="settings" referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

@@ -6,7 +6,7 @@ logging:
   file:
     name: logs/application.log
 server:
-  port: 5000
+  port: 5160
   tomcat:
     basedir: logs
     accesslog:
@@ -17,7 +17,18 @@ server:
       directory: tomcat
       pattern: common
 spring:
-  application:
-    name: productcatalogue
-#  config:
-#    import: local.yml
+  liquibase:
+    enabled: true
+    change-log: db/changelog/db.changelog-master.xml
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+  datasource:
+#    driver-classname: org.postgresql.Driver
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  config:
+    import: application-local.yml
+
