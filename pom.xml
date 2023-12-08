@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.brixo</groupId>
         <artifactId>brixo-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.2</version>
         <relativePath/>
     </parent>
     <artifactId>product-catalogue</artifactId>
@@ -27,6 +27,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>3.1.6</version>
         </dependency>
 
         <dependency>
@@ -69,6 +70,7 @@
                     <mainClass>com.brixo.productcatalogue.ProductCatalogueApplication</mainClass>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 </project>

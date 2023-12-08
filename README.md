@@ -29,3 +29,20 @@ Sample response:
   "updatedAt": "2023-10-30T17:04:14.37142"
 }
 ```
+
+# Set up sonarqube for Dev and prod env 
+
+- Launch AWS ec2 instance 
+- Connect to EC2 Instance 
+- install docker ane docker compose 
+- Create docker compose file 
+- Configure SonarQube for Microservices
+     - Access SonarQube web interface at http://your-ec2-instance-ip:9000.
+     - Log in with the default credentials (admin/admin).
+     - Configure SonarQube as needed, create projects, and obtain project keys.
+- Integrate sonarqube in microservice 
+- run following command locally or step in the codepipeline 
+```bash
+mvn sonar:sonar
+```
+ 
