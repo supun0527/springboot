@@ -1,18 +1,18 @@
-package com.brixo.productcatalogue.entity;
+package com.brixo.productcatalogue.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "settings")
+@Table(name = "settings_history")
 @NoArgsConstructor
 @Getter
 @Setter
-public class Settings extends BaseEntity {
+public class SettingsHistory extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +20,12 @@ public class Settings extends BaseEntity {
   private Long id;
 
   @ManyToOne
-  @JoinColumn(name = "product_id", nullable = false)
-  private Product product;
+  @JoinColumn(name = "setting_id", nullable = false)
+  private Settings setting;
 
   @JdbcTypeCode(SqlTypes.JSON)
   private String value;
+
+  @Column(name = "activated_at", nullable = false)
+  private LocalDateTime activatedAt;
 }

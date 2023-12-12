@@ -1,4 +1,4 @@
-package com.brixo.productcatalogue.entity;
+package com.brixo.productcatalogue.models;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
@@ -8,14 +8,19 @@ import lombok.*;
 @Entity
 @Table(name = "service")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Service extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
+  private Integer id;
 
   @Column(nullable = false)
   private String name;
+
+  @Column(nullable = false)
+  private String key;
 }

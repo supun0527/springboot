@@ -28,6 +28,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(255)"/>
+            <column name="key" type="VARCHAR(255)"/>
             <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
             <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
@@ -41,6 +42,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(255)"/>
+            <column name="key" type="VARCHAR(255)"/>
             <column name="service_id" type="INT"/>
             <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
             <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>

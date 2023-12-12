@@ -1,10 +1,9 @@
-package com.brixo.productcatalogue.repository;
+package com.brixo.productcatalogue.repositories;
 
 
-import com.brixo.productcatalogue.entity.Product;
+import com.brixo.productcatalogue.models.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RestController;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {

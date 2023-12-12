@@ -1,7 +1,7 @@
-package com.brixo.productcatalogue.repository;
+package com.brixo.productcatalogue.repositories;
 
 
-import com.brixo.productcatalogue.entity.SettingsHistory;
+import com.brixo.productcatalogue.models.SettingsHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

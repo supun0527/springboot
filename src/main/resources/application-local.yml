@@ -2,6 +2,6 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/product_catalogue
     username: postgres
-    password: local
+    password: root
 server:
   port: 5160

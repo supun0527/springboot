@@ -1,4 +1,4 @@
-package com.brixo.productcatalogue.entity;
+package com.brixo.productcatalogue.models;
 
 import jakarta.persistence.*;
 import lombok.*;
