@@ -23,7 +23,7 @@ public class ServiceController {
 
     private final ServiceService serviceService;
 
-    public ServiceController(ServiceService serviceService, ServiceMapper serviceMapper) {
+    public ServiceController(ServiceService serviceService) {
         this.serviceService = serviceService;
     }
 

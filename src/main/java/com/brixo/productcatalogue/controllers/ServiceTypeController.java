@@ -30,7 +30,7 @@ public class ServiceTypeController {
 
     private final ServiceTypeService serviceTypeService;
 
-    public ServiceTypeController(ServiceTypeService serviceTypeService, ServiceTypeMapper serviceTypeMapper) {
+    public ServiceTypeController(ServiceTypeService serviceTypeService) {
         this.serviceTypeService = serviceTypeService;
     }
 

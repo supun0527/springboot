@@ -12,7 +12,7 @@ public class Product extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
+  private Integer id;
 
   @Column(nullable = false)
   private String name;
@@ -26,4 +26,8 @@ public class Product extends BaseEntity {
 
   @Column(name = "is_disabled", nullable = false)
   private boolean isDisabled;
+
+  @Column(name = "updated_by")
+  private String updatedBy;
+
 }

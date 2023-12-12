@@ -7,7 +7,7 @@ import com.brixo.productcatalogue.mappers.ServiceTypeMapper;
 import com.brixo.productcatalogue.models.ServiceType;
 import com.brixo.productcatalogue.repositories.ServiceTypeRepository;
 import com.brixo.productcatalogue.utils.StringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +19,6 @@ public class ServiceTypeService {
     private final ServiceService serviceService;
     private final ServiceTypeMapper serviceTypeMapper;
 
-    @Autowired
     public ServiceTypeService(ServiceTypeRepository serviceTypeRepository, ServiceService serviceService, ServiceTypeMapper serviceTypeMapper) {
         this.serviceTypeRepository = serviceTypeRepository;
         this.serviceService = serviceService;

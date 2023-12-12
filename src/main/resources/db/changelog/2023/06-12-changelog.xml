@@ -16,6 +16,7 @@
             <column name="product_key" type="VARCHAR(255)"/>
             <column name="service_type_id" type="INT"/>
             <column name="is_disabled" type="BOOLEAN"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
             <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
             <column name="updated_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
