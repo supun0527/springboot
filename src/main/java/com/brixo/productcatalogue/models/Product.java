@@ -29,5 +29,4 @@ public class Product extends BaseEntity {
 
   @Column(name = "updated_by")
   private String updatedBy;
-
 }

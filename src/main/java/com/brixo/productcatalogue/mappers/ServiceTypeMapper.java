@@ -13,23 +13,23 @@ import java.util.stream.Collectors;
 @Component
 public class ServiceTypeMapper {
 
-    private final ModelMapper modelMapper = new ModelMapper();
+  private final ModelMapper modelMapper = new ModelMapper();
 
-    public ServiceTypeMapper() {
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-    }
+  public ServiceTypeMapper() {
+    modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+  }
 
-    public ServiceTypeDto convertToDto(ServiceType serviceType) {
-        return modelMapper.map(serviceType, ServiceTypeDto.class);
-    }
+  public ServiceTypeDto convertToDto(ServiceType serviceType) {
+    return modelMapper.map(serviceType, ServiceTypeDto.class);
+  }
 
-    public ServiceType convertToEntity(ServiceTypeDto serviceTypeDto) {
-        ServiceType serviceType = modelMapper.map(serviceTypeDto, ServiceType.class);
-        serviceType.setService(Service.builder().id(serviceTypeDto.getServiceId()).build());
-        return serviceType;
-    }
+  public ServiceType convertToEntity(ServiceTypeDto serviceTypeDto) {
+    ServiceType serviceType = modelMapper.map(serviceTypeDto, ServiceType.class);
+    serviceType.setService(Service.builder().id(serviceTypeDto.getServiceId()).build());
+    return serviceType;
+  }
 
-    public List<ServiceTypeDto> convertListToDtoList(List<ServiceType> serviceTypes){
-        return serviceTypes.stream().map(this::convertToDto).collect(Collectors.toList());
-    }
+  public List<ServiceTypeDto> convertListToDtoList(List<ServiceType> serviceTypes) {
+    return serviceTypes.stream().map(this::convertToDto).collect(Collectors.toList());
+  }
 }

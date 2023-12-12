@@ -14,15 +14,12 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-
-
 @SpringBootTest
 @Testcontainers
 @ContextConfiguration(initializers = IntegrationTestSuperclass.Initializer.class)
 @ActiveProfiles("test")
 @DirtiesContext(classMode = AFTER_CLASS)
 public class IntegrationTestSuperclass {
-
 
   @Container
   public static final PostgreSQLContainer<?> postgres =

@@ -48,7 +48,7 @@ class ServiceControllerTest extends IntegrationTestSuperclass {
     }
 
     @Test
-    public void getServiceById_success() throws Exception {
+    void getServiceById_success() throws Exception {
         // Arrange
         Service service = serviceRepository.save(Fixture.serviceBuilder().build());
 
@@ -59,7 +59,7 @@ class ServiceControllerTest extends IntegrationTestSuperclass {
     }
 
     @Test
-    public void getServiceByKey_success() throws Exception {
+    void getServiceByKey_success() throws Exception {
         // Arrange
         Service service = serviceRepository.save(Fixture.serviceBuilder().build());
 

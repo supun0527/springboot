@@ -1,6 +1,5 @@
 package com.brixo.productcatalogue.services;
 
-
 import com.brixo.exceptionmanagement.exceptions.EntityNotFoundException;
 import com.brixo.productcatalogue.Fixture;
 import com.brixo.productcatalogue.dtos.ServiceDto;
@@ -21,145 +20,150 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-public class ServiceServiceTest {
+class ServiceServiceTest {
 
-    @Mock
-    private ServiceRepository serviceRepository;
-    @Mock
-    private ServiceMapper serviceMapper;
+  @Mock private ServiceRepository serviceRepository;
+  @Mock private ServiceMapper serviceMapper;
 
-    @InjectMocks
-    private ServiceService serviceService;
+  @InjectMocks private ServiceService serviceService;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+  @BeforeEach
+  public void setUp() {
+    MockitoAnnotations.openMocks(this);
+  }
 
-    @Test
-    public void getAllServices_success() {
-        // Arrange
-        int serviceId1 = 1;
-        String serviceName1 = "Service1";
-        int serviceId2 = 2;
-        String serviceName2 = "Service2";
-        Service service1 = Service.builder().id(serviceId1).name(serviceName1).build();
-        Service service2 = Service.builder().id(serviceId2).name(serviceName2).build();
+  @Test void getAllServices_success() {
+    // Arrange
+    int serviceId1 = 1;
+    String serviceName1 = "Service1";
+    int serviceId2 = 2;
+    String serviceName2 = "Service2";
+    Service service1 = Service.builder().id(serviceId1).name(serviceName1).build();
+    Service service2 = Service.builder().id(serviceId2).name(serviceName2).build();
 
-        ServiceDto serviceDto1 = ServiceDto.builder().id(serviceId1).name(serviceName1).build();
-        ServiceDto serviceDto2 = ServiceDto.builder().id(serviceId2).name(serviceName2).build();
+    ServiceDto serviceDto1 = ServiceDto.builder().id(serviceId1).name(serviceName1).build();
+    ServiceDto serviceDto2 = ServiceDto.builder().id(serviceId2).name(serviceName2).build();
 
+    when(serviceRepository.findAll()).thenReturn(List.of(service1, service2));
+    when(serviceMapper.convertListToDtoList(any())).thenReturn(List.of(serviceDto1, serviceDto2));
 
-        when(serviceRepository.findAll()).thenReturn(List.of(service1, service2));
-        when(serviceMapper.convertListToDtoList(any())).thenReturn(List.of(serviceDto1, serviceDto2));
+    // Act
+    List<ServiceDto> result = serviceService.getAllServices();
 
-        // Act
-        List<ServiceDto> result = serviceService.getAllServices();
+    // Assert
+    assertEquals(2, result.size());
+    assertEquals(serviceDto1, result.get(0));
+    assertEquals(serviceDto2, result.get(1));
 
-        // Assert
-        assertEquals(2, result.size());
-        assertEquals(serviceDto1, result.get(0));
-        assertEquals(serviceDto2, result.get(1));
+    verify(serviceRepository, times(1)).findAll();
+    verify(serviceMapper, times(1)).convertListToDtoList(any());
+  }
 
-        verify(serviceRepository, times(1)).findAll();
-        verify(serviceMapper, times(1)).convertListToDtoList(any());
-    }
+  @Test
+  void getServiceById_success() {
+    // Arrange
+    Service service = Fixture.serviceBuilder().build();
+    ServiceDto serviceDto = Fixture.serviceDtoBuilder().build();
 
-    @Test
-    public void getServiceById_success() {
-        // Arrange
-        Service service = Fixture.serviceBuilder().build();
-        ServiceDto serviceDto = Fixture.serviceDtoBuilder().build();
+    service.setCreatedAt(LocalDateTime.now());
+    service.setUpdatedAt(LocalDateTime.now());
 
-        service.setCreatedAt(LocalDateTime.now());
-        service.setUpdatedAt(LocalDateTime.now());
+    when(serviceRepository.findById(service.getId())).thenReturn(Optional.of(service));
+    when(serviceMapper.convertToDto(any())).thenReturn(serviceDto);
 
-        when(serviceRepository.findById(service.getId())).thenReturn(Optional.of(service));
-        when(serviceMapper.convertToDto(any())).thenReturn(serviceDto);
+    // Act
+    ServiceDto result = serviceService.getServiceById(service.getId());
 
-        // Act
-        ServiceDto result = serviceService.getServiceById(service.getId());
+    // Assert
+    assertEquals(serviceDto, result);
 
-        // Assert
-        assertEquals(serviceDto, result);
+    verify(serviceRepository, times(1)).findById(service.getId());
+    verify(serviceMapper, times(1)).convertToDto(service);
+  }
 
-        verify(serviceRepository, times(1)).findById(service.getId());
-        verify(serviceMapper, times(1)).convertToDto(service);
-    }
+  @Test
+  void getServiceById_whenServiceNotFound_throwException() {
 
-    @Test
-    public void getServiceById_whenServiceNotFound_throwException() {
+    // Arrange
+    int nonExistentServiceId = 999;
+    when(serviceRepository.findById(nonExistentServiceId)).thenReturn(Optional.empty());
 
-        // Arrange
-        int nonExistentServiceId = 999;
-        when(serviceRepository.findById(nonExistentServiceId)).thenReturn(Optional.empty());
+    // Act & Assert
+    RuntimeException exception =
+        assertThrows(
+            EntityNotFoundException.class,
+            () -> serviceService.getServiceById(nonExistentServiceId));
+    assertEquals("Service not found with id: " + nonExistentServiceId, exception.getMessage());
 
-        // Act & Assert
-        RuntimeException exception = assertThrows(EntityNotFoundException.class, () -> serviceService.getServiceById(nonExistentServiceId));
-        assertEquals("Service not found with id: " + nonExistentServiceId, exception.getMessage());
+    // Verify that the serviceRepository.findById() method was called once with the specified ID
+    verify(serviceRepository, times(1)).findById(nonExistentServiceId);
+  }
 
-        // Verify that the serviceRepository.findById() method was called once with the specified ID
-        verify(serviceRepository, times(1)).findById(nonExistentServiceId);
-    }
+  @Test
+  void createService_success() {
+    // Arrange
+    Service service = Fixture.serviceBuilder().build();
+    ServiceDto serviceDto = Fixture.serviceDtoBuilder().build();
 
-    @Test
-    public void createService_success() {
-        // Arrange
-        Service service = Fixture.serviceBuilder().build();
-        ServiceDto serviceDto = Fixture.serviceDtoBuilder().build();
+    when(serviceRepository.save(service)).thenReturn(service);
+    when(serviceMapper.convertToEntity(any())).thenReturn(service);
+    when(serviceMapper.convertToDto(service)).thenReturn(serviceDto);
 
-        when(serviceRepository.save(service)).thenReturn(service);
-        when(serviceMapper.convertToEntity(any())).thenReturn(service);
-        when(serviceMapper.convertToDto(service)).thenReturn(serviceDto);
+    // Act
+    ServiceDto result = serviceService.createService(serviceDto);
 
+    // Assert
+    assertEquals(serviceDto, result);
 
-        // Act
-        ServiceDto result = serviceService.createService(serviceDto);
+    verify(serviceRepository, times(1)).save(service);
+    verify(serviceMapper, times(1)).convertToEntity(any());
+    verify(serviceMapper, times(1)).convertToDto(service);
+  }
 
-        // Assert
-        assertEquals(serviceDto, result);
+  @Test
+  void updateService_success() {
+    // Arrange
+    String updatedServiceName = "Updated Service";
+    Service existingService = Fixture.serviceBuilder().build();
+    Service updatedService = Fixture.serviceBuilder().name(updatedServiceName).build();
+    ServiceDto updatedServiceDto = Fixture.serviceDtoBuilder().name(updatedServiceName).build();
 
-        verify(serviceRepository, times(1)).save(service);
-        verify(serviceMapper, times(1)).convertToEntity(any());
-        verify(serviceMapper, times(1)).convertToDto(service);
-    }
+    when(serviceRepository.findById(existingService.getId()))
+        .thenReturn(Optional.of(existingService));
+    when(serviceRepository.save(updatedService)).thenReturn(updatedService);
+    when(serviceMapper.convertToDto(any())).thenReturn(updatedServiceDto);
 
-    @Test
-    public void updateService_success() {
-        // Arrange
-        String updatedServiceName = "Updated Service";
-        Service existingService = Fixture.serviceBuilder().build();
-        Service updatedService = Fixture.serviceBuilder().name(updatedServiceName).build();
-        ServiceDto updatedServiceDto = Fixture.serviceDtoBuilder().name(updatedServiceName).build();
+    // Act
+    ServiceDto result =
+        serviceService.updateService(
+            ServiceDto.builder().id(existingService.getId()).name(updatedServiceName).build());
 
-        when(serviceRepository.findById(existingService.getId())).thenReturn(Optional.of(existingService));
-        when(serviceRepository.save(updatedService)).thenReturn(updatedService);
-        when(serviceMapper.convertToDto(any())).thenReturn(updatedServiceDto);
+    // Assert
+    assertEquals(updatedServiceDto, result);
 
-        // Act
-        ServiceDto result = serviceService.updateService(ServiceDto.builder().id(existingService.getId()).name(updatedServiceName).build());
+    verify(serviceRepository, times(1)).findById(existingService.getId());
+    verify(serviceRepository, times(1)).save(any());
+    verify(serviceMapper, times(1)).convertToDto(any());
+  }
 
-        // Assert
-        assertEquals(updatedServiceDto, result);
+  @Test
+  void updateService_whenServiceNotFound_throwException() {
 
-        verify(serviceRepository, times(1)).findById(existingService.getId());
-        verify(serviceRepository, times(1)).save(any());
-        verify(serviceMapper, times(1)).convertToDto(any());
-    }
+    // Arrange
+    int nonExistentServiceId = 999;
 
-    @Test
-    public void updateService_whenServiceNotFound_throwException() {
+    when(serviceRepository.findById(nonExistentServiceId)).thenReturn(Optional.empty());
 
-        // Arrange
-        int nonExistentServiceId = 999;
+    // Act & Assert
+    RuntimeException exception =
+        assertThrows(
+            EntityNotFoundException.class,
+            () ->
+                serviceService.updateService(
+                    Fixture.serviceDtoBuilder().id(nonExistentServiceId).build()));
+    assertEquals("Service not found with id: " + nonExistentServiceId, exception.getMessage());
 
-        when(serviceRepository.findById(nonExistentServiceId)).thenReturn(Optional.empty());
-
-        // Act & Assert
-        RuntimeException exception = assertThrows(EntityNotFoundException.class, () -> serviceService.updateService(Fixture.serviceDtoBuilder().id(nonExistentServiceId).build()));
-        assertEquals("Service not found with id: " + nonExistentServiceId, exception.getMessage());
-
-        // Verify that the serviceRepository.findById() method was called once with the specified ID
-        verify(serviceRepository, times(1)).findById(nonExistentServiceId);
-    }
+    // Verify that the serviceRepository.findById() method was called once with the specified ID
+    verify(serviceRepository, times(1)).findById(nonExistentServiceId);
+  }
 }

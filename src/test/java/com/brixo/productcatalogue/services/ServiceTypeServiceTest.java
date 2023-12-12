@@ -1,25 +1,5 @@
 package com.brixo.productcatalogue.services;
 
-
-import com.brixo.exceptionmanagement.exceptions.EntityNotFoundException;
-import com.brixo.productcatalogue.Fixture;
-import com.brixo.productcatalogue.dtos.ServiceTypeDto;
-import com.brixo.productcatalogue.mappers.ServiceMapper;
-import com.brixo.productcatalogue.mappers.ServiceTypeMapper;
-import com.brixo.productcatalogue.models.Service;
-import com.brixo.productcatalogue.models.ServiceType;
-import com.brixo.productcatalogue.repositories.ServiceTypeRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,150 +7,184 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ServiceTypeServiceTest {
+import com.brixo.exceptionmanagement.exceptions.EntityNotFoundException;
+import com.brixo.productcatalogue.Fixture;
+import com.brixo.productcatalogue.dtos.ServiceTypeDto;
+import com.brixo.productcatalogue.mappers.ServiceTypeMapper;
+import com.brixo.productcatalogue.models.Service;
+import com.brixo.productcatalogue.models.ServiceType;
+import com.brixo.productcatalogue.repositories.ServiceTypeRepository;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-    @Mock
-    private ServiceTypeRepository serviceTypeRepository;
-    @Mock private ServiceService serviceService;
-    @Mock private ServiceTypeMapper serviceTypeMapper;
+class ServiceTypeServiceTest {
 
-    @InjectMocks
-    private ServiceTypeService serviceTypeService;
+  @Mock private ServiceTypeRepository serviceTypeRepository;
+  @Mock private ServiceService serviceService;
+  @Mock private ServiceTypeMapper serviceTypeMapper;
 
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+  @InjectMocks private ServiceTypeService serviceTypeService;
 
-    @Test
-    public void getAllServiceTypes_success() {
-        // Arrange
-        int serviceId1 = 1;
-        String serviceTypeName1 = "ServiceType1";
+  @BeforeEach
+  public void setUp() {
+    MockitoAnnotations.openMocks(this);
+  }
 
-        int serviceId2 = 2;
-        String serviceTypeName2 = "ServiceType2";
+  @Test
+  void getAllServiceTypes_success() {
+    // Arrange
+    int serviceId1 = 1;
+    String serviceTypeName1 = "ServiceType1";
 
-        ServiceType serviceType1 = ServiceType.builder().id(serviceId1).name(serviceTypeName1).build();
-        ServiceType serviceType2 = ServiceType.builder().id(serviceId2).name(serviceTypeName2).build();
+    int serviceId2 = 2;
+    String serviceTypeName2 = "ServiceType2";
 
-        ServiceTypeDto serviceTypeDto1 = ServiceTypeDto.builder().id(serviceId1).name(serviceTypeName1).build();
-        ServiceTypeDto serviceTypeDto2 = ServiceTypeDto.builder().id(serviceId2).name(serviceTypeName2).build();
+    ServiceType serviceType1 = ServiceType.builder().id(serviceId1).name(serviceTypeName1).build();
+    ServiceType serviceType2 = ServiceType.builder().id(serviceId2).name(serviceTypeName2).build();
 
-        when(serviceTypeRepository.findAll()).thenReturn(List.of(serviceType1, serviceType2));
-        when(serviceTypeMapper.convertListToDtoList(any())).thenReturn(List.of(serviceTypeDto1, serviceTypeDto2));
+    ServiceTypeDto serviceTypeDto1 =
+        ServiceTypeDto.builder().id(serviceId1).name(serviceTypeName1).build();
+    ServiceTypeDto serviceTypeDto2 =
+        ServiceTypeDto.builder().id(serviceId2).name(serviceTypeName2).build();
 
-        // Act
-        List<ServiceTypeDto> result = serviceTypeService.getAllServiceTypes();
+    when(serviceTypeRepository.findAll()).thenReturn(List.of(serviceType1, serviceType2));
+    when(serviceTypeMapper.convertListToDtoList(any()))
+        .thenReturn(List.of(serviceTypeDto1, serviceTypeDto2));
 
-        // Assert
-        assertEquals(2, result.size());
-        assertEquals(serviceTypeDto1, result.get(0));
-        assertEquals(serviceTypeDto2, result.get(1));
+    // Act
+    List<ServiceTypeDto> result = serviceTypeService.getAllServiceTypes();
 
-        verify(serviceTypeRepository, times(1)).findAll();
-        verify(serviceTypeMapper, times(1)).convertListToDtoList(any());
-    }
+    // Assert
+    assertEquals(2, result.size());
+    assertEquals(serviceTypeDto1, result.get(0));
+    assertEquals(serviceTypeDto2, result.get(1));
 
-    @Test
-    public void getServiceTypeById_success() {
-        // Arrange
-        ServiceType serviceType = Fixture.serviceTypeBuilder().build();
-        serviceType.setCreatedAt(LocalDateTime.now());
-        serviceType.setUpdatedAt(LocalDateTime.now());
+    verify(serviceTypeRepository, times(1)).findAll();
+    verify(serviceTypeMapper, times(1)).convertListToDtoList(any());
+  }
 
-        ServiceTypeDto serviceTypeDto = Fixture.serviceTypeDtoBuilder().build();
+  @Test
+  void getServiceTypeById_success() {
+    // Arrange
+    ServiceType serviceType = Fixture.serviceTypeBuilder().build();
+    serviceType.setCreatedAt(LocalDateTime.now());
+    serviceType.setUpdatedAt(LocalDateTime.now());
 
-        when(serviceTypeRepository.findById(serviceType.getId())).thenReturn(Optional.of(serviceType));
-        when(serviceTypeMapper.convertToDto(any())).thenReturn(serviceTypeDto);
+    ServiceTypeDto serviceTypeDto = Fixture.serviceTypeDtoBuilder().build();
 
-        // Act
-        ServiceTypeDto result = serviceTypeService.getServiceTypeById(serviceType.getId());
+    when(serviceTypeRepository.findById(serviceType.getId())).thenReturn(Optional.of(serviceType));
+    when(serviceTypeMapper.convertToDto(any())).thenReturn(serviceTypeDto);
 
-        // Assert
-        assertEquals(serviceTypeDto, result);
+    // Act
+    ServiceTypeDto result = serviceTypeService.getServiceTypeById(serviceType.getId());
 
-        verify(serviceTypeRepository, times(1)).findById(serviceType.getId());
-        verify(serviceTypeMapper, times(1)).convertToDto(any());
-    }
+    // Assert
+    assertEquals(serviceTypeDto, result);
 
-    @Test
-    public void getServiceTypeById_whenServiceTypeNotFound_throwException() {
+    verify(serviceTypeRepository, times(1)).findById(serviceType.getId());
+    verify(serviceTypeMapper, times(1)).convertToDto(any());
+  }
 
-        // Arrange
-        int nonExistentServiceTypeId = 999;
-        when(serviceTypeRepository.findById(nonExistentServiceTypeId)).thenReturn(Optional.empty());
+  @Test
+  void getServiceTypeById_whenServiceTypeNotFound_throwException() {
+    // Arrange
+    int nonExistentServiceTypeId = 999;
+    when(serviceTypeRepository.findById(nonExistentServiceTypeId)).thenReturn(Optional.empty());
 
-        // Act & Assert
-        RuntimeException exception = assertThrows(EntityNotFoundException.class, () -> serviceTypeService.getServiceTypeById(nonExistentServiceTypeId));
-        assertEquals("ServiceType not found with id: " + nonExistentServiceTypeId, exception.getMessage());
+    // Act & Assert
+    RuntimeException exception =
+        assertThrows(
+            EntityNotFoundException.class,
+            () -> serviceTypeService.getServiceTypeById(nonExistentServiceTypeId));
+    assertEquals(
+        "ServiceType not found with id: " + nonExistentServiceTypeId, exception.getMessage());
 
-        // Verify that the serviceTypeRepository.findById() method was called once with the specified ID
-        verify(serviceTypeRepository, times(1)).findById(nonExistentServiceTypeId);
-    }
+    // Verify that the serviceTypeRepository.findById() method was called once with the specified ID
+    verify(serviceTypeRepository, times(1)).findById(nonExistentServiceTypeId);
+  }
 
-    @Test
-    public void createServiceType_success() {
-        // Arrange
+  @Test
+  void createServiceType_success() {
+    // Arrange
 
-        Service service = Fixture.serviceBuilder().build();
-        ServiceType serviceType = Fixture.serviceTypeBuilder().build();
-        ServiceTypeDto serviceTypeDto = Fixture.serviceTypeDtoBuilder().build();
+    Service service = Fixture.serviceBuilder().build();
+    ServiceType serviceType = Fixture.serviceTypeBuilder().build();
+    ServiceTypeDto serviceTypeDto = Fixture.serviceTypeDtoBuilder().build();
 
-        when(serviceService.findById(any())).thenReturn(service);
-        when(serviceTypeRepository.save(serviceType)).thenReturn(serviceType);
-        when(serviceTypeMapper.convertToEntity(any())).thenReturn(serviceType);
-        when(serviceTypeMapper.convertToDto(any())).thenReturn(serviceTypeDto);
+    when(serviceService.findById(any())).thenReturn(service);
+    when(serviceTypeRepository.save(serviceType)).thenReturn(serviceType);
+    when(serviceTypeMapper.convertToEntity(any())).thenReturn(serviceType);
+    when(serviceTypeMapper.convertToDto(any())).thenReturn(serviceTypeDto);
 
-        // Act
-        ServiceTypeDto result = serviceTypeService.createServiceType( Fixture.serviceTypeDtoBuilder().serviceId(service.getId()).build());
+    // Act
+    ServiceTypeDto result =
+        serviceTypeService.createServiceType(
+            Fixture.serviceTypeDtoBuilder().serviceId(service.getId()).build());
 
-        // Assert
-        assertEquals(serviceTypeDto, result);
+    // Assert
+    assertEquals(serviceTypeDto, result);
 
+    verify(serviceService, times(serviceType.getId())).findById(service.getId());
+    verify(serviceTypeRepository, times(serviceType.getId())).save(serviceType);
+    verify(serviceTypeMapper, times(serviceType.getId())).convertToEntity(any());
+    verify(serviceTypeMapper, times(serviceType.getId())).convertToDto(serviceType);
+  }
 
-        verify(serviceService, times(serviceType.getId())).findById(service.getId());
-        verify(serviceTypeRepository, times(serviceType.getId())).save(serviceType);
-        verify(serviceTypeMapper, times(serviceType.getId())).convertToEntity(any());
-        verify(serviceTypeMapper, times(serviceType.getId())).convertToDto(serviceType);
-    }
+  @Test
+  void updateServiceType_success() {
+    // Arrange
+    String updatedServiceTypeName = "Updated ServiceType";
+    ServiceType existingServiceType = Fixture.serviceTypeBuilder().build();
+    ServiceType updatedServiceType =
+        Fixture.serviceTypeBuilder().name(updatedServiceTypeName).build();
+    ServiceTypeDto serviceTypeDto =
+        Fixture.serviceTypeDtoBuilder().name(updatedServiceTypeName).build();
 
-    @Test
-    public void updateServiceType_success() {
-        // Arrange
-        String updatedServiceTypeName = "Updated ServiceType";
-        ServiceType existingServiceType = Fixture.serviceTypeBuilder().build();
-        ServiceType updatedServiceType = Fixture.serviceTypeBuilder().name(updatedServiceTypeName).build();
-        ServiceTypeDto serviceTypeDto = Fixture.serviceTypeDtoBuilder().name(updatedServiceTypeName).build();
+    when(serviceTypeRepository.findById(existingServiceType.getId()))
+        .thenReturn(Optional.of(existingServiceType));
+    when(serviceTypeRepository.save(any())).thenReturn(updatedServiceType);
+    when(serviceTypeMapper.convertToDto(any())).thenReturn(serviceTypeDto);
 
+    // Act
+    ServiceTypeDto result =
+        serviceTypeService.updateServiceType(
+            ServiceTypeDto.builder()
+                .id(existingServiceType.getId())
+                .name(updatedServiceTypeName)
+                .build());
 
-        when(serviceTypeRepository.findById(existingServiceType.getId())).thenReturn(Optional.of(existingServiceType));
-        when(serviceTypeRepository.save(any())).thenReturn(updatedServiceType);
-        when(serviceTypeMapper.convertToDto(any())).thenReturn(serviceTypeDto);
+    // Assert
+    assertEquals(serviceTypeDto, result);
 
-        // Act
-        ServiceTypeDto result = serviceTypeService.updateServiceType(ServiceTypeDto.builder().id(existingServiceType.getId()).name(updatedServiceTypeName).build());
+    verify(serviceTypeRepository, times(1)).findById(existingServiceType.getId());
+    verify(serviceTypeRepository, times(1)).save(any());
+    verify(serviceTypeMapper, times(1)).convertToDto(updatedServiceType);
+  }
 
-        // Assert
-        assertEquals(serviceTypeDto, result);
+  @Test
+  void updateServiceType_whenServiceTypeNotFound_throwException() {
 
-        verify(serviceTypeRepository, times(1)).findById(existingServiceType.getId());
-        verify(serviceTypeRepository, times(1)).save(any());
-        verify(serviceTypeMapper, times(1)).convertToDto(updatedServiceType);
-    }
+    // Arrange
+    int nonExistentServiceTypeId = 999;
+    when(serviceTypeRepository.findById(nonExistentServiceTypeId)).thenReturn(Optional.empty());
 
-    @Test
-    public void updateServiceType_whenServiceTypeNotFound_throwException() {
+    // Act & Assert
+    RuntimeException exception =
+        assertThrows(
+            EntityNotFoundException.class,
+            () ->
+                serviceTypeService.updateServiceType(
+                    Fixture.serviceTypeDtoBuilder().id(nonExistentServiceTypeId).build()));
+    assertEquals(
+        "ServiceType not found with id: " + nonExistentServiceTypeId, exception.getMessage());
 
-        // Arrange
-        int nonExistentServiceTypeId = 999;
-        when(serviceTypeRepository.findById(nonExistentServiceTypeId)).thenReturn(Optional.empty());
-
-        // Act & Assert
-        RuntimeException exception = assertThrows(EntityNotFoundException.class, () -> serviceTypeService.updateServiceType(Fixture.serviceTypeDtoBuilder().id(nonExistentServiceTypeId).build()));
-        assertEquals("ServiceType not found with id: " + nonExistentServiceTypeId, exception.getMessage());
-
-        // Verify that the serviceTypeRepository.findById() method was called once with the specified ID
-        verify(serviceTypeRepository, times(1)).findById(nonExistentServiceTypeId);
-    }
+    // Verify that the serviceTypeRepository.findById() method was called once with the specified ID
+    verify(serviceTypeRepository, times(1)).findById(nonExistentServiceTypeId);
+  }
 }

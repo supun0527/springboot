@@ -21,11 +21,11 @@ import java.time.LocalDateTime;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceTypeDto {
-    private Integer id;
-    @NotBlank private String name;
-    private String key;
-    private Integer serviceId;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private ServiceDto service;
+  private Integer id;
+  @NotBlank private String name;
+  private String key;
+  private Integer serviceId;
+  private LocalDateTime createdAt;
+  private LocalDateTime updatedAt;
+  private ServiceDto service;
 }
