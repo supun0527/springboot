@@ -12,7 +12,7 @@ import org.hibernate.type.SqlTypes;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Setting extends BaseEntity {
+public class Settings extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +25,13 @@ public class Setting extends BaseEntity {
 
   @JdbcTypeCode(SqlTypes.JSON)
   private String value;
+
+  @Column(nullable = false)
+  private String name;
+
+  @Column(nullable = false)
+  private String key;
+
+  @Column(name = "updated_by", nullable = false)
+  private String updatedBy;
 }

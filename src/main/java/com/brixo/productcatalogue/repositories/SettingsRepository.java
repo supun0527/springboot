@@ -1,11 +1,14 @@
 package com.brixo.productcatalogue.repositories;
 
-import com.brixo.productcatalogue.models.Setting;
+import com.brixo.productcatalogue.models.Settings;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface SettingsRepository extends JpaRepository<Setting, Long> {
+import java.util.Optional;
 
+@Repository
+public interface SettingsRepository extends JpaRepository<Settings, Long> {
+
+    Optional<Settings> findByKeyAndProductId(String key, int productId);
 
 }

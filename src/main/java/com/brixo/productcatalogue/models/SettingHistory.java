@@ -21,7 +21,7 @@ public class SettingHistory extends BaseEntity {
 
   @ManyToOne
   @JoinColumn(name = "setting_id", nullable = false)
-  private Setting setting;
+  private Settings setting;
 
   @JdbcTypeCode(SqlTypes.JSON)
   private String value;
