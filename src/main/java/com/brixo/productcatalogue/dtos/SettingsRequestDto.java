@@ -24,7 +24,7 @@ public class SettingsRequestDto {
     @NotNull private Integer productId;
     private String name;
     @NotBlank private String key;
-    @NotNull private Object value;
+    @NotNull private String value;
     @Future private LocalDateTime activateAt;
     @NotBlank private String updatedBy;
     private LocalDateTime createdAt;

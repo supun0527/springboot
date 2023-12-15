@@ -58,7 +58,6 @@ public class SettingsService {
             throw new EntityNotFoundException("Unable to create or update setting, product not found with id: " + settingsRequestDto.getProductId());
         }
         Settings setting = findByKeyAndProductId(settingsRequestDto.getKey(), settingsRequestDto.getProductId()).orElse(null);
-        String value = settingsMapper.serialize(settingsRequestDto.getValue());
         if (setting == null) {
             setting = settingsMapper.convert(settingsRequestDto);
             setting.setValue(SettingsValueDto.builder().current(SettingsSubValueDto.builder().build()).future(SettingsSubValueDto.builder().build()).build());
@@ -66,7 +65,7 @@ public class SettingsService {
             setting.getValue().getCurrent().setValue(setting.getValue().getFuture().getValue());
             setting.getValue().getCurrent().setActivatedAt(setting.getValue().getFuture().getActivatedAt());
         }
-        setting.getValue().getFuture().setValue(value);
+        setting.getValue().getFuture().setValue(settingsRequestDto.getValue());
         setting.getValue().getFuture().setActivatedAt(settingsRequestDto.getActivateAt());
         return new ResponseEntity<>(settingsMapper.convertToDto(settingsRepository.save(setting)), HttpStatus.CREATED);
     }

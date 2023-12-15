@@ -1,15 +1,15 @@
 package com.brixo.productcatalogue.models;
 
-import com.brixo.productcatalogue.dtos.SettingsDto;
 import com.brixo.productcatalogue.dtos.SettingsValueDto;
-import com.brixo.productcatalogue.dtos.SettingsValueDtoConverter;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import com.brixo.productcatalogue.dtos.SettingsValueDtoDeSerializer;
+import com.brixo.productcatalogue.dtos.SettingsValueDtoSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
 
 import java.io.Serializable;
@@ -20,7 +20,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Settings extends BaseEntity implements Serializable {
+public class Settings extends BaseEntity implements Serializable{
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,8 @@ public class Settings extends BaseEntity implements Serializable {
   private Product product;
 
 
-  @Convert(converter = SettingsValueDtoConverter.class)
+  @JdbcTypeCode(SqlTypes.JSON)
+  @Column(name = "value",nullable = false)
   private SettingsValueDto value;
 
   @Column(nullable = false)
