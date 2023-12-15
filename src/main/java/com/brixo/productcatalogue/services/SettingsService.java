@@ -3,6 +3,8 @@ package com.brixo.productcatalogue.services;
 import com.brixo.exceptionmanagement.exceptions.EntityNotFoundException;
 import com.brixo.productcatalogue.dtos.SettingsDto;
 import com.brixo.productcatalogue.dtos.SettingsRequestDto;
+import com.brixo.productcatalogue.dtos.SettingsSubValueDto;
+import com.brixo.productcatalogue.dtos.SettingsValueDto;
 import com.brixo.productcatalogue.mappers.SettingsMapper;
 import com.brixo.productcatalogue.models.Settings;
 import com.brixo.productcatalogue.repositories.ProductRepository;
@@ -55,20 +57,18 @@ public class SettingsService {
         if (!productRepository.existsById(settingsRequestDto.getProductId())) {
             throw new EntityNotFoundException("Unable to create or update setting, product not found with id: " + settingsRequestDto.getProductId());
         }
-        Settings settings = findByKeyAndProductId(settingsRequestDto.getKey(), settingsRequestDto.getProductId()).orElse(null);
+        Settings setting = findByKeyAndProductId(settingsRequestDto.getKey(), settingsRequestDto.getProductId()).orElse(null);
         String value = settingsMapper.serialize(settingsRequestDto.getValue());
-        if (settings == null) {
-            settings = settingsMapper.convert(settingsRequestDto);
-        } else {
-            if (settings.getValue().getFuture().getActivatedAt().isBefore(LocalDateTime.now())) {
-                settings.getValue().getCurrent().setValue(settings.getValue().getFuture().getValue());
-                settings.getValue().getCurrent().setActivatedAt(settings.getValue().getFuture().getActivatedAt());
-            }
-
+        if (setting == null) {
+            setting = settingsMapper.convert(settingsRequestDto);
+            setting.setValue(SettingsValueDto.builder().current(SettingsSubValueDto.builder().build()).future(SettingsSubValueDto.builder().build()).build());
+        } else if (setting.getValue().getFuture().getActivatedAt().isBefore(LocalDateTime.now())) {
+            setting.getValue().getCurrent().setValue(setting.getValue().getFuture().getValue());
+            setting.getValue().getCurrent().setActivatedAt(setting.getValue().getFuture().getActivatedAt());
         }
-        settings.getValue().getFuture().setValue(value);
-        settings.getValue().getFuture().setActivatedAt(settingsRequestDto.getActivateAt());
-        return new ResponseEntity<>(settingsMapper.convertToDto(settingsRepository.save(settings)), HttpStatus.CREATED);
+        setting.getValue().getFuture().setValue(value);
+        setting.getValue().getFuture().setActivatedAt(settingsRequestDto.getActivateAt());
+        return new ResponseEntity<>(settingsMapper.convertToDto(settingsRepository.save(setting)), HttpStatus.CREATED);
     }
 
 }
