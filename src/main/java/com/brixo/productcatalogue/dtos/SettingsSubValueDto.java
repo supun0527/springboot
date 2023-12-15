@@ -13,6 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SettingsSubValueDto implements Serializable {
-    private String value;
+    private Object value;
     private LocalDateTime activatedAt;
 }

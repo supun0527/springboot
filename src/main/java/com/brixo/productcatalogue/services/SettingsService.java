@@ -53,12 +53,12 @@ public class SettingsService {
         return settingsRepository.findByKeyAndProductId(key, productId);
     }
 
-    public ResponseEntity<SettingsDto> createOrUpdateSettings(final SettingsRequestDto settingsRequestDto) {
-        if (!productRepository.existsById(settingsRequestDto.getProductId())) {
-            throw new EntityNotFoundException("Unable to create or update setting, product not found with id: " + settingsRequestDto.getProductId());
-        }
+    public SettingsDto createOrUpdateSettings(final SettingsRequestDto settingsRequestDto) {
         Settings setting = findByKeyAndProductId(settingsRequestDto.getKey(), settingsRequestDto.getProductId()).orElse(null);
         if (setting == null) {
+            if (!productRepository.existsById(settingsRequestDto.getProductId())) {
+                throw new EntityNotFoundException("Unable to create or update setting, product not found with id: " + settingsRequestDto.getProductId());
+            }
             setting = settingsMapper.convert(settingsRequestDto);
             setting.setValue(SettingsValueDto.builder().current(SettingsSubValueDto.builder().build()).future(SettingsSubValueDto.builder().build()).build());
         } else if (setting.getValue().getFuture().getActivatedAt().isBefore(LocalDateTime.now())) {
@@ -67,7 +67,7 @@ public class SettingsService {
         }
         setting.getValue().getFuture().setValue(settingsRequestDto.getValue());
         setting.getValue().getFuture().setActivatedAt(settingsRequestDto.getActivateAt());
-        return new ResponseEntity<>(settingsMapper.convertToDto(settingsRepository.save(setting)), HttpStatus.CREATED);
+        return settingsMapper.convertToDto(settingsRepository.save(setting));
     }
 
 }

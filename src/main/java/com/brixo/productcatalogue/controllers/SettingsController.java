@@ -40,7 +40,7 @@ public class SettingsController {
     @PostMapping
     public ResponseEntity<SettingsDto> createSetting(@RequestBody @Valid SettingsRequestDto settingsRequestDto) {
         log.info("Request for create/update Settings: {}", settingsRequestDto);
-        return settingsService.createOrUpdateSettings(settingsRequestDto);
+        return new ResponseEntity<>(settingsService.createOrUpdateSettings(settingsRequestDto), HttpStatus.CREATED);
     }
 
 }
