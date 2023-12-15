@@ -1,5 +1,7 @@
 package com.brixo.productcatalogue.models;
 
+import com.brixo.productcatalogue.dtos.SettingsDto;
+import com.brixo.productcatalogue.dtos.SettingsValueDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +26,7 @@ public class Settings extends BaseEntity {
   private Product product;
 
   @JdbcTypeCode(SqlTypes.JSON)
-  private String value;
+  private SettingsValueDto value;
 
   @Column(nullable = false)
   private String name;

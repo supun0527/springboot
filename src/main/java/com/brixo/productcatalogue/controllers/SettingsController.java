@@ -1,6 +1,7 @@
 package com.brixo.productcatalogue.controllers;
 
 import com.brixo.productcatalogue.dtos.SettingsDto;
+import com.brixo.productcatalogue.dtos.SettingsRequestDto;
 import com.brixo.productcatalogue.services.SettingsService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -37,9 +38,9 @@ public class SettingsController {
     }
 
     @PostMapping
-    public ResponseEntity<SettingsDto> createSetting(@RequestBody @Valid SettingsDto settingsDto) {
-        log.info("Request for create/update Settings: {}", settingsDto);
-        return settingsService.createOrUpdateSettings(settingsDto);
+    public ResponseEntity<SettingsDto> createSetting(@RequestBody @Valid SettingsRequestDto settingsRequestDto) {
+        log.info("Request for create/update Settings: {}", settingsRequestDto);
+        return settingsService.createOrUpdateSettings(settingsRequestDto);
     }
 
 }
