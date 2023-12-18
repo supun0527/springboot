@@ -20,11 +20,11 @@ public class SettingMapper {
 
     public SettingDto convertToDto(Setting setting) {
         SettingDto dto = modelMapper.map(setting, SettingDto.class);
-        if (setting.getValue().getFuture().getActivatedAt().isBefore(LocalDateTime.now())) {
-            dto.getValue().getCurrent().replaceWith(setting.getValue().getFuture());
+        if (setting.getConvertedSettingValue().getFuture().getActivatedAt().isBefore(LocalDateTime.now())) {
+            dto.getValue().getCurrent().replaceWith(setting.getConvertedSettingValue().getFuture());
             dto.getValue().setFuture(null);
         }
-        else if(setting.getValue().getCurrent().getValue() == null){
+        else if(setting.getConvertedSettingValue().getCurrent().getValue() == null){
             dto.getValue().setCurrent(null);
         }
         return dto;

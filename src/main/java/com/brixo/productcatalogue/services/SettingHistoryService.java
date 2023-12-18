@@ -35,10 +35,10 @@ public class SettingHistoryService {
     private void createHistory(Setting setting) {
         SettingHistory settingHistory = SettingHistory.builder()
                 .setting(setting)
-                .value(setting.getValue())
                 .activationStatus(true)
-                .activatedAt(setting.getValue().getFuture().getActivatedAt())
+                .activatedAt(setting.getConvertedSettingValue().getFuture().getActivatedAt())
                 .build();
+        settingHistory.setValue(setting.getConvertedSettingValue().getFuture().getValue());
         settingHistoryRepository.save(settingHistory);
     }
 

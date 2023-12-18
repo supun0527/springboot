@@ -59,27 +59,27 @@ public class SettingService {
         }
         setPayloadValueToFuture(settingRequestDto, setting);
         setting = settingRepository.save(setting);
-    //    settingHistoryService.createSettingHistory(setting);
+        settingHistoryService.createSettingHistory(setting);
         return settingMapper.convertToDto(setting);
 
     }
 
     private void setPayloadValueToFuture(SettingRequestDto settingRequestDto, Setting setting) {
-        setting.getValue().getFuture().setAll(settingRequestDto.getValue(), settingRequestDto.getActivateAt());
+        setting.setFuture(SettingSubValueDto.builder().value(settingRequestDto.getValue()).activatedAt(settingRequestDto.getActivateAt()).build());
     }
 
     private static void updateCurrentValueFromFuture(Setting setting) {
-        setting.getValue().getCurrent().replaceWith(setting.getValue().getFuture());
+        setting.setCurrent(setting.getConvertedSettingValue().getFuture());
     }
 
     private static boolean isFutureValueActivated(Setting setting) {
-        return setting.getValue().getFuture().getActivatedAt().isBefore(LocalDateTime.now());
+        return setting.getConvertedSettingValue().getFuture().getActivatedAt().isBefore(LocalDateTime.now());
     }
 
     private Setting createSetting(SettingRequestDto settingRequestDto) {
         productService.findById(settingRequestDto.getProductId());
         Setting setting = settingMapper.convertToEntity(settingRequestDto);
-        setting.setValue(SettingValueDto.builder().current(SettingSubValueDto.builder().build()).future(SettingSubValueDto.builder().build()).build());
+        setting.setValueBySettingValueDto(SettingValueDto.builder().current(SettingSubValueDto.builder().build()).future(SettingSubValueDto.builder().build()).build());
         return setting;
     }
 

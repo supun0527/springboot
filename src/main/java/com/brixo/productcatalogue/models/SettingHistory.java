@@ -1,6 +1,9 @@
 package com.brixo.productcatalogue.models;
 
-import com.brixo.productcatalogue.dtos.SettingValueDto;
+import com.brixo.productcatalogue.dtos.SettingSubValueDto;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -29,7 +32,13 @@ public class SettingHistory extends BaseEntity implements Serializable {
 
   @JdbcTypeCode(SqlTypes.JSON)
   @Column(name = "value",nullable = false)
-  private SettingValueDto value;
+  private JsonNode value;
+
+  public void setValue(Object value){
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JavaTimeModule());
+    this.value = mapper.valueToTree(value);
+  }
 
   @Column(name = "activation_status", nullable = false)
   private Boolean activationStatus;

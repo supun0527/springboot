@@ -2,7 +2,6 @@ package com.brixo.productcatalogue.dtos;
 
 import lombok.*;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
@@ -11,7 +10,7 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class SettingSubValueDto implements Serializable {
+public class SettingSubValueDto{
     private Object value;
     private LocalDateTime activatedAt;
 
