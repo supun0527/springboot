@@ -51,7 +51,7 @@ public class ServiceTypeService {
 
     public ServiceTypeDto createServiceType(ServiceTypeDto serviceTypeDto) {
         if (serviceTypeDto.getId() == null) {
-            if(StringUtil.isEmpty(serviceTypeDto.getKey())){
+            if (StringUtil.isEmpty(serviceTypeDto.getKey())) {
                 throw new InvalidMethodInputException("key can not be empty.");
             }
             if (serviceTypeDto.getServiceId() == null) {

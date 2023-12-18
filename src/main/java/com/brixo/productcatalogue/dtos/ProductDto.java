@@ -1,7 +1,6 @@
 package com.brixo.productcatalogue.dtos;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,18 +14,19 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ProductDto {
 
-  private Integer id;
+    private Integer id;
 
-  @NotBlank(message = "Name cannot be blank")
-  private String name;
+    @NotBlank(message = "Name cannot be blank")
+    private String name;
 
-  @NotBlank private String productKey;
+    @NotBlank
+    private String productKey;
 
-  private Integer serviceTypeId;
+    private Integer serviceTypeId;
 
-  private boolean isDisabled;
+    private boolean isDisabled;
 
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
-  private String updatedBy;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private String updatedBy;
 }

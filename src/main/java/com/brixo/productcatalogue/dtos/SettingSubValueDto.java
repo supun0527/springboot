@@ -10,15 +10,15 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class SettingSubValueDto{
+public class SettingSubValueDto {
     private Object value;
     private LocalDateTime activatedAt;
 
-    public void replaceWith(SettingSubValueDto dto){
+    public void replaceWith(SettingSubValueDto dto) {
         setAll(dto.getValue(), dto.getActivatedAt());
     }
 
-    public void setAll(Object value, LocalDateTime activatedAt){
+    public void setAll(Object value, LocalDateTime activatedAt) {
         this.value = value;
         this.activatedAt = activatedAt;
     }

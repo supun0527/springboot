@@ -1,6 +1,5 @@
 package com.brixo.productcatalogue.models;
 
-import com.brixo.productcatalogue.dtos.SettingSubValueDto;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -21,28 +20,26 @@ import java.time.LocalDateTime;
 @Builder
 public class SettingHistory extends BaseEntity implements Serializable {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(columnDefinition = "BIGINT")
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "BIGINT")
+    private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "setting_id", nullable = false)
-  private Setting setting;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "setting_id", nullable = false)
+    private Setting setting;
 
-  @JdbcTypeCode(SqlTypes.JSON)
-  @Column(name = "value",nullable = false)
-  private JsonNode value;
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "value", nullable = false)
+    private JsonNode value;
+    @Column(name = "activation_status", nullable = false)
+    private Boolean activationStatus;
+    @Column(name = "activated_at", nullable = false)
+    private LocalDateTime activatedAt;
 
-  public void setValue(Object value){
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(new JavaTimeModule());
-    this.value = mapper.valueToTree(value);
-  }
-
-  @Column(name = "activation_status", nullable = false)
-  private Boolean activationStatus;
-
-  @Column(name = "activated_at", nullable = false)
-  private LocalDateTime activatedAt;
+    public void setValue(Object value) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        this.value = mapper.valueToTree(value);
+    }
 }

@@ -57,7 +57,10 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="product_id" type="INT"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="key" type="VARCHAR(255)"/>
             <column name="value" type="JSONB"/>
+            <column name="updated_by" type="VARCHAR(255)"/>
             <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
             <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
@@ -94,6 +97,13 @@
                                  constraintName="fk_settings_history_settings"
                                  referencedTableName="settings" referencedColumnNames="id"/>
 
+    </changeSet>
+
+    <changeSet id="1701849312-7" author="anders" >
+        <addUniqueConstraint
+                columnNames="product_id, key"
+                constraintName="product_id_and_key"
+                tableName="settings"/>
     </changeSet>
 
 </databaseChangeLog>

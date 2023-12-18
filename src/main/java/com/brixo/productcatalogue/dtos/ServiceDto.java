@@ -17,9 +17,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class ServiceDto {
-  private Integer id;
-  @NotBlank private String name;
-  private String key;
-  private LocalDateTime createdAt;
-  private LocalDateTime updatedAt;
+    private Integer id;
+    @NotBlank
+    private String name;
+    private String key;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

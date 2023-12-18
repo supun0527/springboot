@@ -1,6 +1,5 @@
 package com.brixo.productcatalogue.services;
 
-import com.brixo.json.JsonUtil;
 import com.brixo.productcatalogue.models.Setting;
 import com.brixo.productcatalogue.models.SettingHistory;
 import com.brixo.productcatalogue.repositories.SettingHistoryRepository;
@@ -17,14 +16,14 @@ public class SettingHistoryService {
         this.settingHistoryRepository = settingHistoryRepository;
     }
 
-    public void createSettingHistory(Setting setting){
+    public void createSettingHistory(Setting setting) {
         updateHistory(setting.getId());
         createHistory(setting);
     }
 
     private void updateHistory(Long settingId) {
         settingHistoryRepository.findFirstBySettingIdOrderByIdDesc(settingId).ifPresent(settingHistory -> {
-            if(settingHistory.getActivatedAt().isBefore(LocalDateTime.now())){
+            if (settingHistory.getActivatedAt().isBefore(LocalDateTime.now())) {
                 return;
             }
             settingHistory.setActivationStatus(false);

@@ -14,13 +14,13 @@ import lombok.*;
 @Builder
 public class Service extends BaseEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-  @Column(nullable = false)
-  private String name;
+    @Column(nullable = false)
+    private String name;
 
-  @Column(nullable = false)
-  private String key;
+    @Column(nullable = false)
+    private String key;
 }

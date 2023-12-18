@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/** Controller is responsible for settings end-points. */
+/**
+ * Controller is responsible for settings end-points.
+ */
 @Slf4j
 @Validated
 @RestController

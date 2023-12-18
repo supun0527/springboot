@@ -12,17 +12,17 @@ import lombok.*;
 @Builder
 public class ServiceType extends BaseEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-  @Column(nullable = false)
-  private String name;
+    @Column(nullable = false)
+    private String name;
 
-  @Column(nullable = false)
-  private String key;
+    @Column(nullable = false)
+    private String key;
 
-  @ManyToOne
-  @JoinColumn(name = "service_id", nullable = false)
-  private Service service;
+    @ManyToOne
+    @JoinColumn(name = "service_id", nullable = false)
+    private Service service;
 }

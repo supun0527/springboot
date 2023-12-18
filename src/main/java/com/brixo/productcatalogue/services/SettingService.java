@@ -32,6 +32,14 @@ public class SettingService {
         this.settingHistoryService = settingHistoryService;
     }
 
+    private static void updateCurrentValueFromFuture(Setting setting) {
+        setting.setCurrent(setting.getConvertedSettingValue().getFuture());
+    }
+
+    private static boolean isFutureValueActivated(Setting setting) {
+        return setting.getConvertedSettingValue().getFuture().getActivatedAt().isBefore(LocalDateTime.now());
+    }
+
     public List<SettingDto> getAllSetting() {
         return settingMapper.convertListToDtoList(settingRepository.findAll());
     }
@@ -44,7 +52,6 @@ public class SettingService {
         return settingRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Setting not found with id: " + id));
     }
-
 
     public Setting findByKeyAndProductId(final String key, final int productId) {
         return settingRepository.findByKeyAndProductId(key, productId).orElse(null);
@@ -66,14 +73,6 @@ public class SettingService {
 
     private void setPayloadValueToFuture(SettingRequestDto settingRequestDto, Setting setting) {
         setting.setFuture(SettingSubValueDto.builder().value(settingRequestDto.getValue()).activatedAt(settingRequestDto.getActivateAt()).build());
-    }
-
-    private static void updateCurrentValueFromFuture(Setting setting) {
-        setting.setCurrent(setting.getConvertedSettingValue().getFuture());
-    }
-
-    private static boolean isFutureValueActivated(Setting setting) {
-        return setting.getConvertedSettingValue().getFuture().getActivatedAt().isBefore(LocalDateTime.now());
     }
 
     private Setting createSetting(SettingRequestDto settingRequestDto) {

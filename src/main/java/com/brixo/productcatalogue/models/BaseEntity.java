@@ -13,12 +13,12 @@ import java.time.LocalDateTime;
 @Setter
 public class BaseEntity {
 
-  @CreationTimestamp
-  @Column(name = "created_at", nullable = false, updatable = false)
-  private LocalDateTime createdAt;
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
-  @UpdateTimestamp
-  @Column(name = "updated_at", nullable = false)
-  private LocalDateTime updatedAt;
+    @UpdateTimestamp
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 
 }

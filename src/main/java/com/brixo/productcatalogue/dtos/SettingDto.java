@@ -15,11 +15,13 @@ import java.time.LocalDateTime;
 @Builder
 public class SettingDto {
     private Long id;
-    @NotNull private Integer productId;
+    @NotNull
+    private Integer productId;
     private SettingValueDto value;
     private String name;
     private String key;
-    @NotBlank private String updatedBy;
+    @NotBlank
+    private String updatedBy;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

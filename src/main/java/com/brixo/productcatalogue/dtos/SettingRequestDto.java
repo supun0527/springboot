@@ -20,12 +20,16 @@ import java.time.LocalDateTime;
 @Builder
 public class SettingRequestDto {
     private Long id;
-    @NotNull private Integer productId;
+    @NotNull
+    private Integer productId;
     private String name;
-    @NotBlank private String key;
-    @NotNull private Object value;
+    @NotBlank
+    private String key;
+    @NotNull
+    private Object value;
     private LocalDateTime activateAt;
-    @NotBlank private String updatedBy;
+    @NotBlank
+    private String updatedBy;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

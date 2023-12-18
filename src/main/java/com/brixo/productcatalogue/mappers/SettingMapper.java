@@ -23,8 +23,7 @@ public class SettingMapper {
         if (setting.getConvertedSettingValue().getFuture().getActivatedAt().isBefore(LocalDateTime.now())) {
             dto.getValue().getCurrent().replaceWith(setting.getConvertedSettingValue().getFuture());
             dto.getValue().setFuture(null);
-        }
-        else if(setting.getConvertedSettingValue().getCurrent().getValue() == null){
+        } else if (setting.getConvertedSettingValue().getCurrent().getValue() == null) {
             dto.getValue().setCurrent(null);
         }
         return dto;
