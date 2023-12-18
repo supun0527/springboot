@@ -8,7 +8,7 @@
 
     <changeSet id="1701849312-1" author="tejnal">
         <!-- Create the Product table -->
-        <createTable tableName="product">
+        <createTable tableName="products">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -24,7 +24,7 @@
 
     <changeSet id="1701849312-2" author="tejnal">
         <!-- Create the Service table -->
-        <createTable tableName="service">
+        <createTable tableName="services">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -38,7 +38,7 @@
 
     <changeSet id="1701849312-3" author="tejnal">
         <!-- Create the ServiceType table -->
-        <createTable tableName="service_type">
+        <createTable tableName="service_types">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -72,6 +72,7 @@
             <column name="setting_id" type="BIGINT"/>
             <column name="value" type="JSONB"/>
             <column name="activated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activation_status" type="BOOLEAN"/>
             <column name="created_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
             <column name="updated_at" type="DATETIME" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
@@ -80,17 +81,17 @@
     <changeSet id="1701849312-6" author="tejnal">
 
         <!-- Add foreign key constraints -->
-        <addForeignKeyConstraint baseTableName="product" baseColumnNames="service_type_id"
-                                 constraintName="fk_product_service_type"
-                                 referencedTableName="service_type" referencedColumnNames="id"/>
-        <addForeignKeyConstraint baseTableName="service_type" baseColumnNames="service_id"
-                                 constraintName="fk_service_type_service"
-                                 referencedTableName="service" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="products" baseColumnNames="service_type_id"
+                                 constraintName="fk_products_services_type"
+                                 referencedTableName="service_types" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="service_types" baseColumnNames="service_id"
+                                 constraintName="fk_service_types_services"
+                                 referencedTableName="services" referencedColumnNames="id"/>
         <addForeignKeyConstraint baseTableName="settings" baseColumnNames="product_id"
-                                 constraintName="fk_settings_product"
-                                 referencedTableName="product" referencedColumnNames="id"/>
+                                 constraintName="fk_settings_products"
+                                 referencedTableName="products" referencedColumnNames="id"/>
         <addForeignKeyConstraint baseTableName="settings_history" baseColumnNames="setting_id"
-                                 constraintName="fk_settings_history_setting"
+                                 constraintName="fk_settings_history_settings"
                                  referencedTableName="settings" referencedColumnNames="id"/>
 
     </changeSet>

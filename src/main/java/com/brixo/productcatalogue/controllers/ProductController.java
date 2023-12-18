@@ -1,5 +1,6 @@
 package com.brixo.productcatalogue.controllers;
 
+import com.brixo.exceptionmanagement.exceptions.InvalidMethodInputException;
 import com.brixo.productcatalogue.dtos.ProductDto;
 import com.brixo.productcatalogue.services.ProductService;
 import jakarta.validation.Valid;
@@ -68,18 +69,10 @@ public class ProductController {
   public ResponseEntity<ProductDto> getProductByIdOrProductKey(
       @RequestParam(required = false) Integer id,
       @RequestParam(required = false) String productKey) {
-
-    if (id != null) {
-      Optional<ProductDto> productById = productService.getProductByIdOrProductKey(id, null);
-      return productById.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    } else if (productKey != null) {
-      Optional<ProductDto> productByProductKey =
-          productService.getProductByIdOrProductKey(null, productKey);
-      return productByProductKey
-          .map(ResponseEntity::ok)
-          .orElseGet(() -> ResponseEntity.notFound().build());
-    } else {
-      return ResponseEntity.badRequest().build();
+    if(id == null && productKey == null){
+      throw new InvalidMethodInputException("Either id or productKey should be provided.");
     }
+    return new ResponseEntity<>(id != null ? productService.getProductById(id): productService.getProductByKey(productKey), HttpStatus.OK);
   }
+
 }

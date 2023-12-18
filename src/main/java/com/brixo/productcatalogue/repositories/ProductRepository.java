@@ -13,4 +13,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
   List<Product> findByIsDisabledFalse();
 
   Optional<Product> findByProductKey(String productKey);
+
 }

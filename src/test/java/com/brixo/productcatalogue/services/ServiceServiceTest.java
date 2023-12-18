@@ -3,7 +3,6 @@ package com.brixo.productcatalogue.services;
 import com.brixo.exceptionmanagement.exceptions.EntityNotFoundException;
 import com.brixo.productcatalogue.Fixture;
 import com.brixo.productcatalogue.dtos.ServiceDto;
-import com.brixo.productcatalogue.mappers.ServiceMapper;
 import com.brixo.productcatalogue.models.Service;
 import com.brixo.productcatalogue.repositories.ServiceRepository;
 import org.junit.jupiter.api.BeforeEach;

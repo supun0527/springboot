@@ -1,10 +1,6 @@
 package com.brixo.productcatalogue.models;
 
-import com.brixo.productcatalogue.dtos.SettingsValueDto;
-import com.brixo.productcatalogue.dtos.SettingsValueDtoDeSerializer;
-import com.brixo.productcatalogue.dtos.SettingsValueDtoSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.brixo.productcatalogue.dtos.SettingValueDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,21 +16,21 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Settings extends BaseEntity implements Serializable{
+public class Setting extends BaseEntity implements Serializable{
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(columnDefinition = "BIGINT")
   private Long id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "product_id", nullable = false)
   private Product product;
 
 
   @JdbcTypeCode(SqlTypes.JSON)
   @Column(name = "value",nullable = false)
-  private SettingsValueDto value;
+  private SettingValueDto value;
 
   @Column(nullable = false)
   private String name;

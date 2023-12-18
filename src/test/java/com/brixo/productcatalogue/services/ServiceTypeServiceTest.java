@@ -10,7 +10,6 @@ import static org.mockito.Mockito.when;
 import com.brixo.exceptionmanagement.exceptions.EntityNotFoundException;
 import com.brixo.productcatalogue.Fixture;
 import com.brixo.productcatalogue.dtos.ServiceTypeDto;
-import com.brixo.productcatalogue.mappers.ServiceTypeMapper;
 import com.brixo.productcatalogue.models.Service;
 import com.brixo.productcatalogue.models.ServiceType;
 import com.brixo.productcatalogue.repositories.ServiceTypeRepository;

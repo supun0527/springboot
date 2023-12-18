@@ -2,8 +2,6 @@ package com.brixo.productcatalogue.controllers;
 
 import com.brixo.exceptionmanagement.exceptions.InvalidMethodInputException;
 import com.brixo.productcatalogue.dtos.ServiceTypeDto;
-import com.brixo.productcatalogue.mappers.ServiceTypeMapper;
-import com.brixo.productcatalogue.models.ServiceType;
 import com.brixo.productcatalogue.services.ServiceTypeService;
 import com.brixo.productcatalogue.utils.StringUtil;
 import jakarta.validation.Valid;
@@ -12,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

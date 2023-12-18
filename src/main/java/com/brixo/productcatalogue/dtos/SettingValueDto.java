@@ -12,7 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class SettingsValueDto implements Serializable {
-    private SettingsSubValueDto current;
-    private SettingsSubValueDto future;
+public class SettingValueDto{
+    private SettingSubValueDto current;
+    private SettingSubValueDto future;
 }

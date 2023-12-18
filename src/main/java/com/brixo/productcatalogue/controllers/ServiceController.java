@@ -2,7 +2,6 @@ package com.brixo.productcatalogue.controllers;
 
 import com.brixo.exceptionmanagement.exceptions.InvalidMethodInputException;
 import com.brixo.productcatalogue.dtos.ServiceDto;
-import com.brixo.productcatalogue.mappers.ServiceMapper;
 import com.brixo.productcatalogue.services.ServiceService;
 import com.brixo.productcatalogue.utils.StringUtil;
 import jakarta.validation.Valid;

@@ -3,7 +3,7 @@ package com.brixo.productcatalogue.services;
 import com.brixo.exceptionmanagement.exceptions.EntityNotFoundException;
 import com.brixo.exceptionmanagement.exceptions.InvalidMethodInputException;
 import com.brixo.productcatalogue.dtos.ServiceTypeDto;
-import com.brixo.productcatalogue.mappers.ServiceTypeMapper;
+import com.brixo.productcatalogue.mappers.AbstractMapper;
 import com.brixo.productcatalogue.models.ServiceType;
 import com.brixo.productcatalogue.repositories.ServiceTypeRepository;
 import com.brixo.productcatalogue.utils.StringUtil;
@@ -17,25 +17,25 @@ public class ServiceTypeService {
 
     private final ServiceTypeRepository serviceTypeRepository;
     private final ServiceService serviceService;
-    private final ServiceTypeMapper serviceTypeMapper;
+    private final AbstractMapper abstractMapper;
 
-    public ServiceTypeService(ServiceTypeRepository serviceTypeRepository, ServiceService serviceService, ServiceTypeMapper serviceTypeMapper) {
+    public ServiceTypeService(ServiceTypeRepository serviceTypeRepository, ServiceService serviceService, AbstractMapper abstractMapper) {
         this.serviceTypeRepository = serviceTypeRepository;
         this.serviceService = serviceService;
-        this.serviceTypeMapper = serviceTypeMapper;
+        this.abstractMapper = abstractMapper;
     }
 
     public List<ServiceTypeDto> getAllServiceTypes() {
-        return serviceTypeMapper.convertListToDtoList(serviceTypeRepository.findAll());
+        return abstractMapper.mapAll(serviceTypeRepository.findAll(), ServiceTypeDto.class);
     }
 
 
     public ServiceTypeDto getServiceTypeById(Integer id) {
-        return serviceTypeMapper.convertToDto(findById(id));
+        return abstractMapper.map(findById(id), ServiceTypeDto.class);
     }
 
     public ServiceTypeDto getServiceTypeByKey(String key) {
-        return serviceTypeMapper.convertToDto(findByKey(key));
+        return abstractMapper.map(findByKey(key), ServiceTypeDto.class);
     }
 
     private ServiceType findById(Integer id) {
@@ -57,9 +57,9 @@ public class ServiceTypeService {
             if (serviceTypeDto.getServiceId() == null) {
                 throw new InvalidMethodInputException("ServiceId must not be null.");
             }
-            ServiceType serviceType = serviceTypeMapper.convertToEntity(serviceTypeDto);
+            ServiceType serviceType = abstractMapper.map(serviceTypeDto, ServiceType.class);
             serviceType.setService(serviceService.findById(serviceTypeDto.getServiceId()));
-            return serviceTypeMapper.convertToDto(serviceTypeRepository.save(serviceType));
+            return abstractMapper.map(serviceTypeRepository.save(serviceType), ServiceTypeDto.class);
         }
         return updateServiceType(serviceTypeDto);
     }
@@ -67,7 +67,7 @@ public class ServiceTypeService {
     public ServiceTypeDto updateServiceType(ServiceTypeDto serviceTypeDto) {
         ServiceType existingServiceType = findById(serviceTypeDto.getId());
         existingServiceType.setName(serviceTypeDto.getName());
-        return serviceTypeMapper.convertToDto(serviceTypeRepository.save(existingServiceType));
+        return abstractMapper.map(serviceTypeRepository.save(existingServiceType), ServiceTypeDto.class);
     }
 
 

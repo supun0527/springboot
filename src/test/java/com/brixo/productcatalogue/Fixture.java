@@ -3,7 +3,7 @@ package com.brixo.productcatalogue;
 import com.brixo.productcatalogue.dtos.ProductDto;
 import com.brixo.productcatalogue.dtos.ServiceDto;
 import com.brixo.productcatalogue.dtos.ServiceTypeDto;
-import com.brixo.productcatalogue.dtos.SettingsDto;
+import com.brixo.productcatalogue.dtos.SettingDto;
 import com.brixo.productcatalogue.models.Service;
 import com.brixo.productcatalogue.models.ServiceType;
 
@@ -57,7 +57,7 @@ public class Fixture {
   public static ServiceTypeDto.ServiceTypeDtoBuilder serviceTypeDtoBuilder() {
     return ServiceTypeDto.builder().name(TEST_SERVICE_TYPE_NAME).key(TEST_SERVICE_TYPE_KEY);
   }
-  public static SettingsDto settingsDto = SettingsDto.builder()
+  public static SettingDto settingDto = SettingDto.builder()
           .name("Test Settings")
           .key("test_key")
           .updatedBy("test_user")

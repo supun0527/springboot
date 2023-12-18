@@ -1,8 +1,8 @@
 package com.brixo.productcatalogue.controllers;
 
-import com.brixo.productcatalogue.dtos.SettingsDto;
-import com.brixo.productcatalogue.dtos.SettingsRequestDto;
-import com.brixo.productcatalogue.services.SettingsService;
+import com.brixo.productcatalogue.dtos.SettingDto;
+import com.brixo.productcatalogue.dtos.SettingRequestDto;
+import com.brixo.productcatalogue.services.SettingService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,28 +19,28 @@ import java.util.List;
 @RequestMapping("/v1/settings")
 public class SettingsController {
 
-    private final SettingsService settingsService;
+    private final SettingService settingService;
 
-    public SettingsController(SettingsService settingsService) {
-        this.settingsService = settingsService;
+    public SettingsController(SettingService settingService) {
+        this.settingService = settingService;
     }
 
     @GetMapping
-    public ResponseEntity<List<SettingsDto>> getAllSettings() {
+    public ResponseEntity<List<SettingDto>> getAllSettings() {
         log.info("Request for get all Settings");
-        return new ResponseEntity<>(settingsService.getAllSettings(), HttpStatus.OK);
+        return new ResponseEntity<>(settingService.getAllSetting(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SettingsDto> getSettingsById(@PathVariable Long id) {
+    public ResponseEntity<SettingDto> getSettingsById(@PathVariable Long id) {
         log.info("Request for get Settings by id: {}", id);
-        return new ResponseEntity<>(settingsService.getSettingsById(id), HttpStatus.OK);
+        return new ResponseEntity<>(settingService.getSettingById(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<SettingsDto> createSetting(@RequestBody @Valid SettingsRequestDto settingsRequestDto) {
-        log.info("Request for create/update Settings: {}", settingsRequestDto);
-        return new ResponseEntity<>(settingsService.createOrUpdateSettings(settingsRequestDto), HttpStatus.CREATED);
+    public ResponseEntity<SettingDto> createSetting(@RequestBody @Valid SettingRequestDto settingRequestDto) {
+        log.info("Request for create/update Settings: {}", settingRequestDto);
+        return new ResponseEntity<>(settingService.createOrUpdateSetting(settingRequestDto), HttpStatus.CREATED);
     }
 
 }

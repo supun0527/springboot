@@ -1,15 +1,9 @@
 package com.brixo.productcatalogue.dtos;
 
 import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -19,13 +13,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SettingsRequestDto {
+public class SettingDto {
     private Long id;
     @NotNull private Integer productId;
+    private SettingValueDto value;
     private String name;
-    @NotBlank private String key;
-    @NotNull private Object value;
-    private LocalDateTime activateAt;
+    private String key;
     @NotBlank private String updatedBy;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
